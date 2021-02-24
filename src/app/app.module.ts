@@ -3,13 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule,routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SearchBarComponent } from './search-bar/search-bar.component';
-import { ToolBarComponent } from './tool-bar/tool-bar.component';
+import { SearchBarComponent } from './component/search-bar/search-bar.component';
+import { ToolBarComponent } from './component/tool-bar/tool-bar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AlertModalComponent } from './alert-modal/alert-modal.component';
-import { BookTableComponent } from './book-table/book-table.component';
+import { AlertModalComponent } from './component/alert-modal/alert-modal.component';
+import { BookTableComponent } from './component/book-table/book-table.component';
 import { AngularMaterialModule } from './angular-material.module';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
