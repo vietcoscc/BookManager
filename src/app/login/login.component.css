@@ -1,0 +1,10 @@
+.example-card{
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center
+}
+mat-form-field{
+  width: 500px;
+}

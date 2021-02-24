@@ -1,0 +1,46 @@
+.toolbar {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: whitesmoke;
+  color: white;
+  font-weight: 600;
+}
+
+.toolbar img {
+  margin: 0 16px;
+}
+
+.toolbar .Header-link {
+  height: 40px;
+  margin: 0 16px;
+}
+
+.toolbar .Header-link:hover {
+  opacity: 0.8;
+}
+
+.spacer {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+}
+
+svg.material-icons {
+  height: 24px;
+  width: auto;
+}
+
+svg.material-icons:not(:last-child) {
+  margin-right: 8px;
+}
+
+p{
+  color: black;
+  margin-left: 10px;
+  margin-top: 5px;
+}

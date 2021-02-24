@@ -1,0 +1,14 @@
+<mat-form-field class="example-form-field">
+  <mat-label style="color: orange">Search book</mat-label>
+  <input matInput type="text" [(ngModel)]="value" style="color: black" />
+  <button
+    mat-button
+    *ngIf="value"
+    matSuffix
+    mat-icon-button
+    (click)="value = ''"
+    style="border: none; background-color: transparent;"
+  >
+    <mat-icon (click)="value = ''">close</mat-icon>
+  </button>
+</mat-form-field>
