@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import {
+  NgbModalConfig,
+  NgbModal,
+  NgbModalRef,
+} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-alert-modal',
@@ -8,6 +12,11 @@ import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
   providers: [NgbModalConfig, NgbModal],
 })
 export class AlertModalComponent implements OnInit {
+  @ViewChild('content') contentModal!: TemplateRef<AlertModalComponent>;
+
+  private isShown: boolean = false;
+  private modalRef!: NgbModalRef;
+
   modalTitle: String = 'Alert';
   modalContent: String = '...';
   modalButton: String = 'Ok';
@@ -17,9 +26,25 @@ export class AlertModalComponent implements OnInit {
     config.keyboard = false;
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
+    console.log(changes);
+
+  }
   ngOnInit(): void {}
 
-  open(content: any) {
-    this.modalService.open(content);
+  async open(modalContent: String = '...') {
+    this.modalContent = modalContent;
+    this.modalRef = this.modalService.open(this.contentModal);
+    this.modalRef.result.then();
+  }
+
+  async close() {
+    this.modalService.dismissAll();
+  }
+
+  isOpen(): boolean {
+    return this.isShown;
   }
 }

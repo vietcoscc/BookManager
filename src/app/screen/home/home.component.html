@@ -1,5 +1,7 @@
 <div class="content" role="main">
+  <app-tool-bar></app-tool-bar>
   <app-search-bar></app-search-bar>
   <app-alert-modal></app-alert-modal>
-  <app-book-table></app-book-table>
+  <app-book-table [data] = 'tableData'></app-book-table>
 </div>
+<app-alert-modal #modal></app-alert-modal>

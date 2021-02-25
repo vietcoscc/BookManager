@@ -1,4 +1,4 @@
-<mat-card class="example-card">
+<mat-card class="example-card" >
   <mat-card-header>
     <mat-card-title>Login</mat-card-title>
   </mat-card-header>
@@ -8,13 +8,13 @@
         <tr>
           <td>
             <mat-form-field class="example-full-width">
-            <input matInput (keypress)="keyEvent($event)" placeholder="Username" [(ngModel)]="username" name="username" required>
+            <input matInput placeholder="Username" [(ngModel)]="username" name="username" required>
             </mat-form-field>
           </td>
         </tr>
         <tr>
         <td><mat-form-field class="example-full-width">
-          <input matInput (keypress)="keyEvent($event)"  placeholder="Password" [(ngModel)]="password"type="password" name="password" required>
+          <input matInput placeholder="Password" [(ngModel)]="password"type="password" name="password" required>
         </mat-form-field></td>
       </tr></table>
     </form>
@@ -24,4 +24,3 @@
     <button mat-raised-button (click)="login()" color="primary">Login</button>
   </mat-card-actions>
 </mat-card>
-<app-alert-modal #modal></app-alert-modal>
