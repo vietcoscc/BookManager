@@ -1,0 +1,9 @@
+input{
+  width: 200px;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

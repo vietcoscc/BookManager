@@ -1,0 +1,48 @@
+<div>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <input
+        type="text"
+        placeholder="name"
+        formControlName="name"
+        [(ngModel)]="bookValue.name"
+      />
+    </div>
+    <div class="form-group">
+      <input
+        type="text"
+        placeholder="desciption"
+        formControlName="description"
+        [(ngModel)]="bookValue.description"
+      />
+    </div>
+    <div class="form-group">
+      <input
+        type="text"
+        placeholder="author"
+        formControlName="author"
+        [(ngModel)]="bookValue.author"
+      />
+    </div>
+    <div class="form-group">
+      <input
+        #image
+        (change)="onFileSelected($event)"
+        type="file"
+        accept="image/*"
+        formControlName="image"
+        [(ngModel)]="bookValue.imageUrl"
+      />
+      <img [src] = "bookValue.imageUrl">
+    </div>
+
+    <button type="submit" [disabled]="false">Save</button>
+  </form>
+</div>
+<br />{{ bookValue.name }}
+
+<br />{{ bookValue.description }}
+
+<br />{{ bookValue.author }}
+
+<br />{{ bookValue.imageUrl }}
