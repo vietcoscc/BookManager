@@ -1,7 +1,8 @@
+import { LoginRequest } from './../../model/LoginRequest';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
-import { LoginRequest } from 'src/app/model/LoginRequest';
 import { AlertModalComponent } from '../../component/alert-modal/alert-modal.component';
 import { from } from 'rxjs';
 @Component({
@@ -13,16 +14,31 @@ export class LoginComponent implements OnInit {
 
   @ViewChild('modal') private modalComponent!: AlertModalComponent;
 
-  constructor(private router: Router, private userService: UserService) { }
+  formGroup!: FormGroup
 
-  username: string = '';
-  password: string = '';
+  constructor(private router: Router, private userService: UserService, private FormBuilder: FormBuilder) { }
+
+  loginRequest = new LoginRequest('admin', 'admin')
+
   showSpinner: boolean = false;
-  ngOnInit() { }
+  ngOnInit() {
+    this.formGroup = this.FormBuilder.group({
+      username: ['', Validators.required, Validators.minLength(10)],
+      password: ['', Validators.required]
+    })
+  }
 
-  login(): void {
+  get username() {
+    return this.formGroup.get('username')
+  }
+
+  get password() {
+    return this.formGroup.get('password')
+  }
+
+  onSubmit(): void {
     this.userService
-      .login(new LoginRequest(this.username, this.password))
+      .login(new LoginRequest(this.loginRequest.username, this.loginRequest.password))
       .subscribe(
         (res) => {
           this.router.navigate(['home'])
@@ -41,7 +57,7 @@ export class LoginComponent implements OnInit {
   // @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.key == 'Enter') {
-      this.login();
+
     }
     // Your row selection code
   }

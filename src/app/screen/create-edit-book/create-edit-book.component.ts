@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToolBarComponent } from './../../component/tool-bar/tool-bar.component';
 import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild, ChangeDetectorRef, ViewChildren } from '@angular/core';
 import { Form, FormControl, FormGroup, FormBuilder, Validators, } from '@angular/forms';
@@ -18,16 +19,17 @@ export enum Action {
 
 export class CreateEditBookComponent implements OnInit {
 
-  @Input() action: Action = Action.Create;
-  @Input() book!: Book;
+  @Input() editBook!: Book;
 
   @ViewChild('modal') private modal!: AlertModalComponent;
   @ViewChild('toolbar') private toolbar!: ToolBarComponent;
 
-  bookValue = new Book();
+  screenAction: Action = Action.Create
+  newBook = new Book();
   file = null;
   formGroup!: FormGroup;
-  constructor(private formBuilder: FormBuilder, private bookService: BookService) {
+  constructor(private formBuilder: FormBuilder, private bookService: BookService, private router: Router) {
+    this.initData()
     this.formGroup = this.formBuilder.group({
       name: ['name', [Validators.required, Validators.minLength(4)]],
       description: ['description', [Validators.maxLength(100)]],
@@ -35,8 +37,17 @@ export class CreateEditBookComponent implements OnInit {
     });
   }
 
+  initData() {
+    let data = this.router.getCurrentNavigation()?.extras.queryParams
+    console.log(data);
+    this.screenAction = data?.action
+    if (this.screenAction == Action.Edit) {
+      this.newBook.id = data?.id
+    }
+  }
+
   get name() {
-    console.log(this.formGroup.get('name'));
+    // console.log(this.formGroup.get('name'));
     return this.formGroup.get('name')
   }
 
@@ -47,6 +58,7 @@ export class CreateEditBookComponent implements OnInit {
   get description() {
     return this.formGroup.get('description')
   }
+
   ngOnInit(): void {
 
   }
@@ -54,7 +66,8 @@ export class CreateEditBookComponent implements OnInit {
   ngAfterViewInit() {
     console.log(this.toolbar);
     console.log(this.modal);
-    this.toolbar.setScreenName(Action[this.action] + " Book")
+
+    this.toolbar.setScreenName(Action[this.screenAction] + " Book")
   }
 
   onSubmit() {
@@ -62,9 +75,9 @@ export class CreateEditBookComponent implements OnInit {
       this.modal.open("Invalid")
       return
     }
-    if (this.action == Action.Create) {
+    if (this.screenAction == Action.Create) {
       console.log('create');
-      this.bookService.saveBook(this.bookValue, this.file).subscribe(
+      this.bookService.saveBook(this.newBook, this.file).subscribe(
         (res) => {
           console.log(res);
         },
@@ -93,7 +106,7 @@ export class CreateEditBookComponent implements OnInit {
       reader.readAsDataURL(pickedFile);
       reader.onload = (_event) => {
         console.log(typeof (reader.result));
-        this.bookValue.imageUrl = reader.result as string;
+        this.newBook.imageUrl = reader.result as string;
       }
     }
   }
