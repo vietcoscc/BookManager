@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-tool-bar',
@@ -6,7 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tool-bar.component.css'],
 })
 export class ToolBarComponent implements OnInit {
-  constructor() {}
 
-  ngOnInit(): void {}
+  screenName: string = ''
+  constructor(private changeDetectorRef: ChangeDetectorRef) { }
+
+  ngOnInit(): void {
+
+  }
+
+  public setScreenName(screenName: string) {
+    console.log("setScreenName: " + screenName);
+    this.screenName = screenName;
+    this.changeDetectorRef.detectChanges()
+  }
 }

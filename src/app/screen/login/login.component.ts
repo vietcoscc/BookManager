@@ -10,14 +10,15 @@ import { from } from 'rxjs';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
+
   @ViewChild('modal') private modalComponent!: AlertModalComponent;
 
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(private router: Router, private userService: UserService) { }
 
   username: string = '';
   password: string = '';
   showSpinner: boolean = false;
-  ngOnInit() {}
+  ngOnInit() { }
 
   login(): void {
     this.userService
@@ -39,7 +40,7 @@ export class LoginComponent implements OnInit {
 
   // @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    if (event.key == 'Enter' && !this.modalComponent.isOpen()) {
+    if (event.key == 'Enter') {
       this.login();
     }
     // Your row selection code

@@ -4,8 +4,8 @@ export class Book {
   id: number = 0;
   name: string = '';
   description: string = '';
-  author: string = '';
-  imageUrl: string = '';
-  deletedAt: string = '';
-  lastUpdatedAt: string = '';
+  author: string | null = '';
+  imageUrl: string | null = '';
+  deletedAt: string | null = '';
+  lastUpdatedAt: string | null = '';
 }

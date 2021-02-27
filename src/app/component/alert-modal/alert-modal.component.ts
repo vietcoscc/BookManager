@@ -14,7 +14,6 @@ import {
 export class AlertModalComponent implements OnInit {
   @ViewChild('content') contentModal!: TemplateRef<AlertModalComponent>;
 
-  private isShown: boolean = false;
   private modalRef!: NgbModalRef;
 
   modalTitle: String = 'Alert';
@@ -32,19 +31,12 @@ export class AlertModalComponent implements OnInit {
     console.log(changes);
 
   }
-  ngOnInit(): void {}
 
-  async open(modalContent: String = '...') {
+  ngOnInit(): void { }
+
+  open(modalContent: String = '...') {
     this.modalContent = modalContent;
     this.modalRef = this.modalService.open(this.contentModal);
     this.modalRef.result.then();
-  }
-
-  async close() {
-    this.modalService.dismissAll();
-  }
-
-  isOpen(): boolean {
-    return this.isShown;
   }
 }

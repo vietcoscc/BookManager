@@ -5,7 +5,7 @@
   height: 60px;
   display: flex;
   align-items: center;
-  background-color: whitesmoke;
+  background-color: #1976d2;
   color: white;
   font-weight: 600;
 }
@@ -39,7 +39,7 @@ svg.material-icons:not(:last-child) {
   margin-right: 8px;
 }
 
-p{
+p {
   color: black;
   margin-left: 10px;
   margin-top: 5px;

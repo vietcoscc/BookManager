@@ -1,48 +1,40 @@
 <div>
-  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <input
-        type="text"
-        placeholder="name"
-        formControlName="name"
-        [(ngModel)]="bookValue.name"
-      />
-    </div>
-    <div class="form-group">
-      <input
-        type="text"
-        placeholder="desciption"
-        formControlName="description"
-        [(ngModel)]="bookValue.description"
-      />
-    </div>
-    <div class="form-group">
-      <input
-        type="text"
-        placeholder="author"
-        formControlName="author"
-        [(ngModel)]="bookValue.author"
-      />
-    </div>
-    <div class="form-group">
-      <input
-        #image
-        (change)="onFileSelected($event)"
-        type="file"
-        accept="image/*"
-        formControlName="image"
-        [(ngModel)]="bookValue.imageUrl"
-      />
-      <img [src] = "bookValue.imageUrl">
-    </div>
+  <app-tool-bar #toolbar></app-tool-bar>
+  <div>
+    <form #form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <input class="form-control" type="text" placeholder="name" formControlName="name" [(ngModel)]="bookValue.name"
+          required />
+        <span class="error" *ngIf="name?.errors?.required"> Name is required</span>
+        <span class="error" *ngIf="name?.errors?.minlength">Min length is 4</span>
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" placeholder="desciption" formControlName="description"
+          [(ngModel)]="bookValue.description" />
+        <div class="valid-feedback">Valid.</div>
+        <div class="invalid-feedback">Please fill out this field.</div>
+        <span class="error" *ngIf="description?.errors?.maxlength"> Max length is 100</span>
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" placeholder="author" formControlName="author"
+          [(ngModel)]="bookValue.author" />
+        <span class="error" *ngIf="author?.errors?.required"> Name is required</span>
+        <span class="error" *ngIf="author?.errors?.maxlength"> Max length is 100</span>
+      </div>
+      <div class="form-group">
+        <input #image (change)="onFileSelected($event)" type="file" accept="image/*" />
+        <img height='100px' [src]="bookValue.imageUrl">
+      </div>
 
-    <button type="submit" [disabled]="false">Save</button>
-  </form>
+      <button class="btn btn-primary" type="submit" [disabled]="formGroup.invalid">Save</button>
+    </form>
+  </div>
+  <br />{{ bookValue.name }}
+
+  <br />{{ bookValue.description }}
+
+  <br />{{ bookValue.author }}
+
+  <br />{{ bookValue.imageUrl }}
 </div>
-<br />{{ bookValue.name }}
-
-<br />{{ bookValue.description }}
-
-<br />{{ bookValue.author }}
-
-<br />{{ bookValue.imageUrl }}
+<app-alert-modal #modal></app-alert-modal>
