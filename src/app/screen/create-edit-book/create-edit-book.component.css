@@ -1,6 +1,12 @@
 input {
   width: 500pt;
 }
+form {
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 input.ng-valid {
   border-left: 5px solid green;
@@ -8,12 +14,6 @@ input.ng-valid {
 
 input.ng-invalid {
   border-left: 5px solid red;
-}
-form {
-  margin-top: 5%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .error {
