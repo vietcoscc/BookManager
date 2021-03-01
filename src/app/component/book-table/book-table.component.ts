@@ -1,5 +1,11 @@
 import { Router } from '@angular/router';
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { Book } from 'src/app/model/Book';
 import { BookService } from '../../service/book.service';
@@ -16,7 +22,11 @@ export class BookTableComponent implements OnInit {
 
   dtTrigger: Subject<any> = new Subject<any>();
 
-  constructor(private bookService: BookService, private router: Router) { }
+  constructor(
+    private bookService: BookService,
+    private router: Router,
+    private cdref: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -34,26 +44,36 @@ export class BookTableComponent implements OnInit {
     console.log('ngOnChanges');
   }
 
-  editBook(id: number) {
+  ngAfterContentChecked() {
+    this.cdref.detectChanges();
+  }
+
+  editBook(id: number | null) {
+    if (id == null) {
+      return;
+    }
     this.router.navigate(['edit'], {
       queryParams: {
         action: Action.Edit,
-        id: id
+        id: id,
       },
       queryParamsHandling: 'merge',
       // preserve the existing query params in the route
-      skipLocationChange: false
+      skipLocationChange: false,
       // do not trigger navigation
-    })
+    });
   }
 
-  deleteBook(index: number, id: number) {
+  deleteBook(index: number, id: number | null) {
+    if (id == null) {
+      return;
+    }
     this.bookService.deleteBook(id).subscribe(
       (res) => {
         this.data.splice(index, 1);
       },
-      (err) => { },
-      () => { }
+      (err) => {},
+      () => {}
     );
     console.log('deleteBook');
   }

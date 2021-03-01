@@ -1,6 +1,17 @@
 input {
   width: 500pt;
 }
+
+input.image {
+  width: auto;
+}
+
+img {
+  background-position: center center;
+  background-repeat: no-repeat;
+  object-fit: cover;
+  margin-right: 10px;
+}
 form {
   margin-top: 5%;
   display: flex;

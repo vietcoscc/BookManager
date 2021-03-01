@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoaderService } from './service/loader.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,8 @@ export class AppComponent implements OnInit {
   //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
   //Add 'implements OnInit' to the class.
   title = 'BookManager';
-  constructor(private router: Router) {
+  constructor(private router: Router, public loaderService: LoaderService) {
+    console.log(loaderService.isLoading.value);
 
   }
   ngOnInit(): void {}

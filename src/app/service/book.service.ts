@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { from, Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, delay, map, tap } from 'rxjs/operators';
 import { BaseResponse } from '../model/BaseResponse';
 import { BaseService } from './base.service';
 
@@ -13,6 +13,21 @@ import { Book } from '../model/Book';
 export class BookService extends BaseService {
   constructor(private http: HttpClient) {
     super();
+  }
+
+  baseUrl = 'http://localhost:8080/api/books';
+  getBook(id: string | number): Observable<BaseResponse<Book>> {
+    let httpOptions = {
+      headers: new HttpHeaders({}),
+      params: new HttpParams(),
+    };
+
+    return this.http
+      .get<BaseResponse<Book>>(this.baseUrl + '/' + id, httpOptions)
+      .pipe(
+        tap(() => this.log('fetched books: ')),
+        catchError(this.handleError<BaseResponse<Book>>('getBooks'))
+      );
   }
 
   getBooks(
@@ -29,10 +44,7 @@ export class BookService extends BaseService {
     };
 
     return this.http
-      .get<BaseResponse<Array<Book>>>(
-        'http://localhost:8080/api/books',
-        httpOptions
-      )
+      .get<BaseResponse<Array<Book>>>(this.baseUrl, httpOptions)
       .pipe(
         tap(() => this.log('fetched books: ')),
         catchError(this.handleError<BaseResponse<Array<Book>>>('getBooks'))
@@ -49,12 +61,18 @@ export class BookService extends BaseService {
       form.append('image', file! as File);
     }
     return this.http
-      .post<BaseResponse<string>>(
-        'http://localhost:8080/api/books',
-        form,
-        httpOptions
-      )
+      .post<BaseResponse<string>>(this.baseUrl, form, httpOptions)
       .pipe(tap((_) => this.log('saved book')));
+  }
+
+  putBook(book: Book): Observable<BaseResponse<Book>> {
+    return this.http
+      .put<BaseResponse<Book>>(this.baseUrl + '/' + book.id, book)
+      .pipe(
+        tap(() => {
+          console.log('updated book');
+        })
+      );
   }
 
   deleteBook(id: number): Observable<BaseResponse<string>> {

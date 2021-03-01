@@ -1,7 +1,7 @@
 import { logging } from 'protractor';
 
 export class Book {
-  id: number = 0;
+  id: number | null = null;
   name: string = '';
   description: string = '';
   author: string | null = '';

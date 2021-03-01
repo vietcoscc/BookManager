@@ -17,8 +17,16 @@
       <td>{{ book.description }}</td>
       <td>{{ book.author }}</td>
       <td>
-        <button id="edit" class="btn  btn-primary" (click)="editBook(book.id)">edit</button>
-        <button id="delete" class="btn  btn-primary" (click)="deleteBook(i, book.id)">delete</button>
+        <button id="edit" class="btn btn-primary" (click)="editBook(book.id)">
+          edit
+        </button>
+        <button
+          id="delete"
+          class="btn btn-primary"
+          (click)="deleteBook(i, book.id)"
+        >
+          delete
+        </button>
       </td>
     </tr>
   </tbody>

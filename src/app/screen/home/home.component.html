@@ -1,6 +1,9 @@
 <div class="content" role="main">
   <app-tool-bar></app-tool-bar>
-  <div style="margin-top: 100px; margin-left: 50px; margin-right: 50px; ">
+  <button class="btn btn-primary btn-create-book" (click)="createBook()">
+    Create book
+  </button>
+  <div class="data-table">
     <app-book-table></app-book-table>
   </div>
 </div>
