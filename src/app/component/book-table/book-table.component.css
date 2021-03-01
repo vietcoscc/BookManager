@@ -4,3 +4,9 @@
 #edit {
   margin-left: 10px;
 }
+
+img {
+  background-repeat: no-repeat;
+  object-fit: contain;
+  background-clip: border-box;
+}

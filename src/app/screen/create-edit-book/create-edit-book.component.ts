@@ -22,6 +22,7 @@ import { Book } from 'src/app/model/Book';
 import { BookService } from '../../service/book.service';
 import { AlertModalComponent } from 'src/app/component/alert-modal/alert-modal.component';
 import { isFakeMousedownFromScreenReader } from '@angular/cdk/a11y';
+import { AppComponent } from 'src/app/app.component';
 
 export enum Action {
   Create,
@@ -37,7 +38,7 @@ export class CreateEditBookComponent implements OnInit {
   @ViewChild('toolbar') private toolbar!: ToolBarComponent;
   screenAction: Action = Action.Create;
   newBook = new Book();
-  file = null;
+  file: File | null = null;
   formGroup!: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
@@ -127,13 +128,24 @@ export class CreateEditBookComponent implements OnInit {
 
   editBook() {
     console.log('edit');
-    this.bookService.putBook(this.newBook).subscribe(
+    this.bookService.putBook(this.newBook, this.file).subscribe(
       (res) => {
         this.modal.open('Edited book');
         console.log(res);
       },
       (err) => {}
     );
+  }
+
+  get imageUrl() {
+    if (
+      this.screenAction == Action.Create ||
+      this.newBook.imageUrl?.startsWith('data:')
+    ) {
+      return this.newBook.imageUrl;
+    } else {
+      return AppComponent.baseUrl + 'images/' + this.newBook.imageUrl;
+    }
   }
 
   onFileSelected(event: any) {
@@ -150,7 +162,8 @@ export class CreateEditBookComponent implements OnInit {
       var reader = new FileReader();
       reader.readAsDataURL(pickedFile);
       reader.onload = (_event) => {
-        console.log(typeof reader.result);
+        this.file = pickedFile;
+        console.log(reader);
         this.newBook.imageUrl = reader.result as string;
       };
     }

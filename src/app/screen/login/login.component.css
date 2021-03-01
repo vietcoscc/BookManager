@@ -1,11 +1,7 @@
-input {
-  width: 500pt;
-}
 form {
-  margin-top: 5%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center;
+  width: 500px;
+  margin: 0 auto;
 }
 
 input.ng-valid {
@@ -18,4 +14,9 @@ input.ng-invalid {
 
 .error {
   color: red;
+}
+
+.title {
+  margin-top: 50px;
+  text-align: center;
 }

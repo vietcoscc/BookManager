@@ -15,7 +15,7 @@ export class BookService extends BaseService {
     super();
   }
 
-  baseUrl = 'http://localhost:8080/api/books';
+  baseBookUrl = 'http://localhost:8080/api/books';
   getBook(id: string | number): Observable<BaseResponse<Book>> {
     let httpOptions = {
       headers: new HttpHeaders({}),
@@ -23,7 +23,7 @@ export class BookService extends BaseService {
     };
 
     return this.http
-      .get<BaseResponse<Book>>(this.baseUrl + '/' + id, httpOptions)
+      .get<BaseResponse<Book>>(this.baseBookUrl + '/' + id, httpOptions)
       .pipe(
         tap(() => this.log('fetched books: ')),
         catchError(this.handleError<BaseResponse<Book>>('getBooks'))
@@ -44,30 +44,37 @@ export class BookService extends BaseService {
     };
 
     return this.http
-      .get<BaseResponse<Array<Book>>>(this.baseUrl, httpOptions)
+      .get<BaseResponse<Array<Book>>>(this.baseBookUrl, httpOptions)
       .pipe(
         tap(() => this.log('fetched books: ')),
         catchError(this.handleError<BaseResponse<Array<Book>>>('getBooks'))
       );
   }
 
-  saveBook(book: Book, file = null) {
+  saveBook(book: Book, file: File | null) {
     console.log(file);
 
     let httpOptions = {};
     let form = new FormData();
+    book.imageUrl = '';
     form.append('book', JSON.stringify(book));
     if (file != null) {
-      form.append('image', file! as File);
+      form.append('image', file);
     }
     return this.http
-      .post<BaseResponse<string>>(this.baseUrl, form, httpOptions)
+      .post<BaseResponse<string>>(this.baseBookUrl, form, httpOptions)
       .pipe(tap((_) => this.log('saved book')));
   }
 
-  putBook(book: Book): Observable<BaseResponse<Book>> {
+  putBook(book: Book, file: File | null): Observable<BaseResponse<Book>> {
+    let httpOptions = {};
+    let form = new FormData();
+    form.append('book', JSON.stringify(book));
+    if (file != null) {
+      form.append('image', file);
+    }
     return this.http
-      .put<BaseResponse<Book>>(this.baseUrl + '/' + book.id, book)
+      .put<BaseResponse<Book>>(this.baseBookUrl + '/' + book.id, form)
       .pipe(
         tap(() => {
           console.log('updated book');

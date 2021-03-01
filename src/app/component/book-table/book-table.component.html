@@ -12,7 +12,14 @@
   <tbody>
     <tr *ngFor="let book of data; let i = index">
       <td>{{ book.id }}</td>
-      <td>{{ book.imageUrl }}</td>
+      <td>
+        <img
+          width="70px"
+          height="100px"
+          [src]="'http://localhost:8080/images/' + book.imageUrl"
+          alt=""
+        />
+      </td>
       <td>{{ book.name }}</td>
       <td>{{ book.description }}</td>
       <td>{{ book.author }}</td>
