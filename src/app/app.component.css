@@ -1,13 +1,13 @@
-.content{
-
-}
-
-loader-container{
-  position: fixed;
+.content {
+  position: absolute;
   width: 100%;
-  z-index: 99;
 }
 
+loader-container {
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+}
 
 @media screen and (max-width: 767px) {
   .card-container > *:not(.circle-link),

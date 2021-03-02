@@ -5,6 +5,7 @@ import { BaseResponse } from '../model/BaseResponse';
 import { from, Observable, of } from 'rxjs';
 import { catchError, delay, map, tap } from 'rxjs/operators';
 import { BaseService } from './base.service';
+import { AppComponent } from '../app.component';
 
 @Injectable({ providedIn: 'root' })
 export class UserService extends BaseService {
@@ -17,12 +18,22 @@ export class UserService extends BaseService {
     let httpOptions = {};
     return this.http
       .post<BaseResponse<string>>(
-        'http://localhost:8080/api/login',
+        AppComponent.baseUrl + 'api/login',
         user,
         httpOptions
       )
-      .pipe(
-        tap((_) => this.log('Login success'))
-      );
+      .pipe(tap((_) => this.log('Login success')));
+  }
+
+  /** POST: add a new hero to the server */
+  register(user: LoginRequest): Observable<BaseResponse<string>> {
+    let httpOptions = {};
+    return this.http
+      .post<BaseResponse<string>>(
+        AppComponent.baseUrl + 'api/register',
+        user,
+        httpOptions
+      )
+      .pipe(tap((_) => this.log('Register success')));
   }
 }

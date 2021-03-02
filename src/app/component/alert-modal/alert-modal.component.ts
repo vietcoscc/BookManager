@@ -1,4 +1,10 @@
-import { Component, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import {
   NgbModalConfig,
   NgbModal,
@@ -29,7 +35,6 @@ export class AlertModalComponent implements OnInit {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
     console.log(changes);
-
   }
 
   ngOnInit(): void { }
@@ -38,5 +43,10 @@ export class AlertModalComponent implements OnInit {
     this.modalContent = modalContent;
     this.modalRef = this.modalService.open(this.contentModal);
     this.modalRef.result.then();
+  }
+
+  okClick() {
+    console.log('okClick');
+    this.modalService.dismissAll()
   }
 }

@@ -5,11 +5,16 @@ import {
   Input,
   OnInit,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Book } from 'src/app/model/Book';
 import { BookService } from '../../service/book.service';
-import { Action } from 'src/app/screen/create-edit-book/create-edit-book.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { AppComponent } from 'src/app/app.component';
+import { isEmpty } from 'rxjs/operators';
+import { Action } from 'src/app/enum';
 
 @Component({
   selector: 'app-book-table',
@@ -17,16 +22,23 @@ import { Action } from 'src/app/screen/create-edit-book/create-edit-book.compone
   styleUrls: ['./book-table.component.css'],
 })
 export class BookTableComponent implements OnInit {
-  data: Book[] = [];
+  data = new MatTableDataSource<Book>();
   dtOptions: DataTables.Settings = {};
-
-  dtTrigger: Subject<any> = new Subject<any>();
-
+  displayedColumns: string[] = [
+    'id',
+    'image',
+    'name',
+    'description',
+    'author',
+    'action',
+  ];
   constructor(
     private bookService: BookService,
     private router: Router,
     private cdref: ChangeDetectorRef
-  ) {}
+  ) { }
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -35,10 +47,11 @@ export class BookTableComponent implements OnInit {
     };
     this.bookService.getBooks('', 0, 0).subscribe((res) => {
       console.log(res);
-      this.data = (res as any).body;
-      this.dtTrigger.next();
+      this.data.data = (res as any).body;
     });
   }
+
+  searchString: string = ''
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('ngOnChanges');
@@ -46,6 +59,18 @@ export class BookTableComponent implements OnInit {
 
   ngAfterContentChecked() {
     this.cdref.detectChanges();
+  }
+
+  ngAfterViewInit() {
+    this.data.paginator = this.paginator;
+  }
+
+  imageUrl(element: Book) {
+    if (element.imageUrl) {
+      return AppComponent.baseUrl + 'images/' + element.imageUrl;
+    } else {
+      return AppComponent.defaultBookCover;
+    }
   }
 
   editBook(id: number | null) {
@@ -64,22 +89,39 @@ export class BookTableComponent implements OnInit {
     });
   }
 
-  deleteBook(index: number, id: number | null) {
-    if (id == null) {
-      return;
-    }
+  deleteBook(index: number, id: number) {
+    console.log(index);
     this.bookService.deleteBook(id).subscribe(
       (res) => {
-        this.data.splice(index, 1);
+        this.data.data.splice(index, 1);
+        this.data._updateChangeSubscription();
       },
-      (err) => {},
-      () => {}
+      (err) => { },
+      () => { }
     );
     console.log('deleteBook');
   }
 
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
+  deleteRowData(row: Book) {
+    this.data.data.filter((value, key) => {
+      return value.id != row.id;
+    });
   }
+
+  keyEvent(event: KeyboardEvent) {
+    console.log(event);
+    console.log(this.searchString);
+
+    if (this.searchString) {
+      if (event.key == "Enter") {
+        this.bookService.getBooks(this.searchString, 0, 0).subscribe(
+          res => {
+            this.data.data = []
+            this.data.data = (res as any).body
+            this.data._updateChangeSubscription()
+          })
+      }
+    }
+  }
+  ngOnDestroy(): void { }
 }

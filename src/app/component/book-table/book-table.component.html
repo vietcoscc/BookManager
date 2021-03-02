@@ -1,45 +1,61 @@
-<table datatable [dtOptions]="dtOptions" class="row-border hover">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Image</th>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Author</th>
-      <th>action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let book of data; let i = index">
-      <td>{{ book.id }}</td>
-      <td>
-        <img
-          width="70px"
-          height="100px"
-          [src]="'http://localhost:8080/images/' + book.imageUrl"
-          alt=""
-        />
+<div class="">
+  <div class="data-table-bar">
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <div class="spacer"></div>
+    <mat-form-field class="search-field">
+      <mat-label>Search book</mat-label>
+      <input matInput [(ngModel)]="searchString" placeholder="Search book" value="" (keypress)="keyEvent($event)">
+    </mat-form-field>
+  </div>
+  <table mat-table [dataSource]="data">
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <td mat-cell *matCellDef="let i = index">
+        <div id="id">{{ i }}</div>
       </td>
-      <td>{{ book.name }}</td>
-      <td>{{ book.description }}</td>
-      <td>{{ book.author }}</td>
-      <td>
-        <button id="edit" class="btn btn-primary" (click)="editBook(book.id)">
+    </ng-container>
+
+    <!-- Image Column -->
+    <ng-container matColumnDef="image">
+      <th mat-header-cell *matHeaderCellDef>Image</th>
+      <td mat-cell *matCellDef="let element">
+        <img width="100px" height="120px" [src]="imageUrl(element)" />
+      </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+    </ng-container>
+
+    <!-- Author Column -->
+    <ng-container matColumnDef="author">
+      <th mat-header-cell *matHeaderCellDef>Author</th>
+      <td mat-cell *matCellDef="let element">{{ element.author }}</td>
+    </ng-container>
+
+    <!-- Aciton Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element; let i = index">
+        <button id="edit" class="btn btn-primary" (click)="editBook(element.id)">
           edit
         </button>
-        <button
-          id="delete"
-          class="btn btn-primary"
-          (click)="deleteBook(i, book.id)"
-        >
+        <button id="delete" class="btn btn-primary" (click)="deleteBook(i, element.id)">
           delete
         </button>
       </td>
-    </tr>
-  </tbody>
-  <!-- <tbody *ngIf="data?.length == 0">
-    <tr>
-      <td colspan="2" class="no-data-available">No data!</td>
-    </tr>
-  </tbody> -->
-</table>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>

@@ -3,82 +3,36 @@
   <div>
     <form #form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <input
-          class="form-control"
-          type="text"
-          placeholder="name"
-          formControlName="name"
-          [(ngModel)]="newBook.name"
-        />
+        <input class="form-control" type="text" placeholder="name" formControlName="name" [(ngModel)]="newBook.name" />
         <span class="error" *ngIf="name?.errors?.required && name?.touched">
-          Name is required</span
-        >
-        <span class="error" *ngIf="name?.errors?.minlength && name?.touched"
-          >Min length is 4</span
-        >
+          Name is required</span>
+        <span class="error" *ngIf="name?.errors?.minlength && name?.touched">Min length is 4</span>
       </div>
       <div class="form-group">
-        <input
-          class="form-control"
-          type="text"
-          placeholder="desciption"
-          formControlName="description"
-          [(ngModel)]="newBook.description"
-        />
+        <input class="form-control" type="text" placeholder="desciption" formControlName="description"
+          [(ngModel)]="newBook.description" />
         <div class="valid-feedback">Valid.</div>
         <div class="invalid-feedback">Please fill out this field.</div>
-        <span
-          class="error"
-          *ngIf="description?.errors?.maxlength && description?.touched"
-        >
-          Max length is 100</span
-        >
+        <span class="error" *ngIf="description?.errors?.maxlength && description?.touched">
+          Max length is 100</span>
       </div>
       <div class="form-group">
-        <input
-          class="form-control"
-          type="text"
-          placeholder="author"
-          formControlName="author"
-          [(ngModel)]="newBook.author"
-        />
+        <input class="form-control" type="text" placeholder="author" formControlName="author"
+          [(ngModel)]="newBook.author" />
         <span class="error" *ngIf="author?.errors?.required && author?.touched">
-          Name is required</span
-        >
-        <span
-          class="error"
-          *ngIf="author?.errors?.maxlength && author?.touched"
-        >
-          Max length is 100</span
-        >
+          Name is required</span>
+        <span class="error" *ngIf="author?.errors?.maxlength && author?.touched">
+          Max length is 100</span>
       </div>
       <div class="form-group">
         <img height="100px" width="70px" [src]="imageUrl" />
-        <input
-          class="image"
-          #image
-          (change)="onFileSelected($event)"
-          type="file"
-          accept="image/*"
-        />
+        <input class="image" #image (change)="onFileSelected($event)" type="file" accept="image/*" />
       </div>
 
-      <button
-        #btnSubmit
-        class="btn btn-primary"
-        type="submit"
-        [disabled]="formGroup.invalid"
-      >
+      <button #btnSubmit class="btn btn-primary" type="submit" [disabled]="formGroup.invalid">
         Save
       </button>
     </form>
   </div>
-  <!-- <br />{{ newBook.name }}
-
-  <br />{{ newBook.description }}
-
-  <br />{{ newBook.author }}
-
-  <br />{{ newBook.imageUrl }} -->
 </div>
 <app-alert-modal #modal></app-alert-modal>

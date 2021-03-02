@@ -21,13 +21,9 @@ import { from } from 'rxjs';
 import { Book } from 'src/app/model/Book';
 import { BookService } from '../../service/book.service';
 import { AlertModalComponent } from 'src/app/component/alert-modal/alert-modal.component';
-import { isFakeMousedownFromScreenReader } from '@angular/cdk/a11y';
 import { AppComponent } from 'src/app/app.component';
-
-export enum Action {
-  Create,
-  Edit,
-}
+import { Action } from 'src/app/enum';
+import { isEmpty } from 'rxjs/operators';
 
 @Component({
   templateUrl: './create-edit-book.component.html',
@@ -36,7 +32,7 @@ export enum Action {
 export class CreateEditBookComponent implements OnInit {
   @ViewChild('modal') private modal!: AlertModalComponent;
   @ViewChild('toolbar') private toolbar!: ToolBarComponent;
-  screenAction: Action = Action.Create;
+
   newBook = new Book();
   file: File | null = null;
   formGroup!: FormGroup;
@@ -54,7 +50,7 @@ export class CreateEditBookComponent implements OnInit {
     });
   }
 
-  initData() {}
+  initData() { }
 
   get name() {
     return this.formGroup.get('name');
@@ -69,25 +65,26 @@ export class CreateEditBookComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log();
+    console.log(this.router.url);
     let action = this.activatedRoute.snapshot.queryParamMap.get('action')!;
     let id = this.activatedRoute.snapshot.queryParamMap.get('id')!;
-    // let data = this.router.getCurrentNavigation()?.extras.queryParams;
-    // console.log(data);
-    // this.screenAction = data?.action;
-    if (action == '1' && id != null) {
-      this.screenAction = Action.Edit;
-    } else {
-      this.screenAction = Action.Create;
+    if (!id) {
+      this.router.navigate(['home'])
     }
-    if (this.screenAction == Action.Edit) {
+    if (this.router.url.startsWith('/edit')) {
       this.newBook.id = parseInt(id);
       this.bookService.getBook(id).subscribe(
         (res) => {
-          this.newBook = res.body as Book;
+          console.log("subscribe->res: " + res.status);
+          if ((res as any).error) {
+            this.router.navigate(['home'])
+          } else {
+            this.newBook = res.body as Book;
+          }
         },
         (err) => {
-          console.log(err);
+          console.log("subscribe->error: ");
+          this.router.navigate(['home'])
         }
       );
     }
@@ -96,8 +93,16 @@ export class CreateEditBookComponent implements OnInit {
   ngAfterViewInit() {
     console.log(this.toolbar);
     console.log(this.modal);
+    if (this.isEditScreen) {
+      this.toolbar.setScreenName('Edit Book');
+    } else {
+      this.toolbar.setScreenName('Create Book');
+    }
 
-    this.toolbar.setScreenName(Action[this.screenAction] + ' Book');
+  }
+
+  get isEditScreen() {
+    return this.router.url.startsWith('/edit')
   }
 
   onSubmit() {
@@ -105,7 +110,7 @@ export class CreateEditBookComponent implements OnInit {
       this.modal.open('Invalid');
       return;
     }
-    if (this.screenAction == Action.Create) {
+    if (!this.isEditScreen) {
       this.createBook();
     } else {
       this.editBook();
@@ -118,6 +123,7 @@ export class CreateEditBookComponent implements OnInit {
     this.bookService.saveBook(this.newBook, this.file).subscribe(
       (res) => {
         this.modal.open('Created book');
+        this.router.navigate(['home']);
         console.log(res);
       },
       (err) => {
@@ -133,18 +139,22 @@ export class CreateEditBookComponent implements OnInit {
         this.modal.open('Edited book');
         console.log(res);
       },
-      (err) => {}
+      (err) => { }
     );
   }
 
   get imageUrl() {
     if (
-      this.screenAction == Action.Create ||
+      !this.isEditScreen ||
       this.newBook.imageUrl?.startsWith('data:')
     ) {
       return this.newBook.imageUrl;
     } else {
-      return AppComponent.baseUrl + 'images/' + this.newBook.imageUrl;
+      if (this.newBook.imageUrl) {
+        return AppComponent.baseUrl + 'images/' + this.newBook.imageUrl;
+      } else {
+        return AppComponent.defaultBookCover;
+      }
     }
   }
 

@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertModalComponent } from 'src/app/component/alert-modal/alert-modal.component';
+import { Action } from 'src/app/enum';
 import { Book } from 'src/app/model/Book';
 import { AuthService } from 'src/app/service/auth.service';
-import { Action } from '../create-edit-book/create-edit-book.component';
 
 @Component({
   selector: 'app-home',

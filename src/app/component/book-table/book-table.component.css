@@ -10,3 +10,22 @@ img {
   object-fit: contain;
   background-clip: border-box;
 }
+table {
+  width: 100%;
+}
+
+img {
+  margin: 5px;
+  border: 1px solid gray;
+  object-fit: cover;
+}
+.search-field{
+
+}
+.data-table-bar{
+  display: flex;
+}
+
+.spacer{
+  flex: 1;
+}
