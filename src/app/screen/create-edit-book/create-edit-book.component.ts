@@ -68,7 +68,7 @@ export class CreateEditBookComponent implements OnInit {
     console.log(this.router.url);
     let action = this.activatedRoute.snapshot.queryParamMap.get('action')!;
     let id = this.activatedRoute.snapshot.queryParamMap.get('id')!;
-    if (!id) {
+    if (!this.router.url.startsWith('/create') && !id) {
       this.router.navigate(['home'])
     }
     if (this.router.url.startsWith('/edit')) {

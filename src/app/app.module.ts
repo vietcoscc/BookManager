@@ -18,6 +18,7 @@ import { InterceptorService } from './service/interceptor.service';
 import { AuthService } from './service/auth.service';
 import { LoaderService } from './service/loader.service';
 import { LocalStorageService } from './service/local-storage.service';
+import { PageNotFoundComponent } from './screen/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { LocalStorageService } from './service/local-storage.service';
     routingComponents,
     CreateEditBookComponent,
     ProgressComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
