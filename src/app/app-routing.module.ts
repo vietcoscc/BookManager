@@ -5,14 +5,16 @@ import { CreateEditBookComponent } from './screen/create-edit-book/create-edit-b
 import { HomeComponent } from './screen/home/home.component';
 import { LoginComponent } from './screen/login/login.component';
 import { PageNotFoundComponent } from './screen/page-not-found/page-not-found.component';
+import { SearchComponent } from './screen/search/search.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
   { path: 'register', component: LoginComponent },
   { path: 'home', component: HomeComponent },
   { path: 'create', component: CreateEditBookComponent },
   { path: 'edit', component: CreateEditBookComponent },
-  { path: '', redirectTo:'/login',pathMatch:'full'},
-  { path: '**', component:PageNotFoundComponent},
+  { path: 'search', component: SearchComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({

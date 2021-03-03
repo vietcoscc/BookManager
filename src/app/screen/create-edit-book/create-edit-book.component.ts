@@ -137,6 +137,7 @@ export class CreateEditBookComponent implements OnInit {
     this.bookService.putBook(this.newBook, this.file).subscribe(
       (res) => {
         this.modal.open('Edited book');
+        this.router.navigate(['home'])
         console.log(res);
       },
       (err) => { }

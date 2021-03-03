@@ -2,13 +2,10 @@
   display: inline;
 }
 
-.data-table {
-  margin-left: 50px;
-  margin-right: 50px;
-  margin-top: 40px;
+div.spacer {
+  flex: 1;
 }
 
-.btn-create-book {
-  margin-left: 50px;
-  margin-top: 50px;
+div.action {
+  display: flex;
 }

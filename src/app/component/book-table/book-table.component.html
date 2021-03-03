@@ -1,61 +1,64 @@
-<div class="">
-  <div class="data-table-bar">
+<div class="table-toolbar">
+  <div class="paginator">
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-    <div class="spacer"></div>
-    <mat-form-field class="search-field">
-      <mat-label>Search book</mat-label>
+  </div>
+  <div class="input-search">
+    <mat-form-field style="display: flex;" *ngIf="!isOnAdvancedSearch">
+      <mat-label>Search by name</mat-label>
       <input matInput [(ngModel)]="searchString" placeholder="Search book" value="" (keypress)="keyEvent($event)">
     </mat-form-field>
   </div>
-  <table mat-table [dataSource]="data">
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>No.</th>
-      <td mat-cell *matCellDef="let i = index">
-        <div id="id">{{ i }}</div>
-      </td>
-    </ng-container>
-
-    <!-- Image Column -->
-    <ng-container matColumnDef="image">
-      <th mat-header-cell *matHeaderCellDef>Image</th>
-      <td mat-cell *matCellDef="let element">
-        <img width="100px" height="120px" [src]="imageUrl(element)" />
-      </td>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-    </ng-container>
-
-    <!-- Description Column -->
-    <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef>Description</th>
-      <td mat-cell *matCellDef="let element">{{ element.description }}</td>
-    </ng-container>
-
-    <!-- Author Column -->
-    <ng-container matColumnDef="author">
-      <th mat-header-cell *matHeaderCellDef>Author</th>
-      <td mat-cell *matCellDef="let element">{{ element.author }}</td>
-    </ng-container>
-
-    <!-- Aciton Column -->
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef>Action</th>
-      <td mat-cell *matCellDef="let element; let i = index">
-        <button id="edit" class="btn btn-primary" (click)="editBook(element.id)">
-          edit
-        </button>
-        <button id="delete" class="btn btn-primary" (click)="deleteBook(i, element.id)">
-          delete
-        </button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
 </div>
+
+<table mat-table [dataSource]="data">
+  <!-- Id Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>No.</th>
+    <td mat-cell *matCellDef="let element;let i = index">
+      <div id="id">{{ element.id }}</div>
+    </td>
+  </ng-container>
+
+  <!-- Image Column -->
+  <ng-container matColumnDef="image">
+    <th mat-header-cell *matHeaderCellDef>Image</th>
+    <td mat-cell *matCellDef="let element">
+      <img id="book-image" class="rounded" width="100px" height="120px" [src]="imageUrl(element)" />
+    </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+  </ng-container>
+
+  <!-- Description Column -->
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef>Description</th>
+    <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+  </ng-container>
+
+  <!-- Author Column -->
+  <ng-container matColumnDef="author">
+    <th mat-header-cell *matHeaderCellDef>Author</th>
+    <td mat-cell *matCellDef="let element">{{ element.author }}</td>
+  </ng-container>
+
+  <!-- Aciton Column -->
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef>Action</th>
+    <td mat-cell *matCellDef="let element; let i = index">
+      <button id="edit" class="btn btn-primary" (click)="editBook(element.id)">
+        edit
+      </button>
+      <button id="delete" class="btn btn-primary" (click)="deleteBook(i, element.id)">
+        delete
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+<p *ngIf="isTableEmpty">No data</p>

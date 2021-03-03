@@ -1,0 +1,30 @@
+<div class="container pt-3">
+  <div class="row">
+    <form class="col-md-12" action="submit" (ngSubmit)="onSubmit()">
+      <div>
+        <div class="search-field">
+          <div id="field-id" class="form-group">
+            <input type="number" min="" placeholder="id" class="form-control" [(ngModel)]="id"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+          <div id="field-name" class="form-group">
+            <input type="text" placeholder="name" class="form-control" [(ngModel)]="name"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+          <div id="field-description" class="form-group">
+            <input type="text" placeholder="description" class="form-control" [(ngModel)]="description"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+          <div id="field-author" class="form-group">
+            <input type="text" placeholder="author" class="form-control" [(ngModel)]="author"
+              [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+        <button id="btn-search" class="btn btn-primary" (click)="onSearch()">Search</button>
+      </div>
+    </form>
+  </div>
+  <div class="row">
+    <app-book-table class="col-md-12" [data]="data"></app-book-table>
+  </div>
+</div>

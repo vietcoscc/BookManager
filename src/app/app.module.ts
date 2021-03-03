@@ -19,6 +19,7 @@ import { AuthService } from './service/auth.service';
 import { LoaderService } from './service/loader.service';
 import { LocalStorageService } from './service/local-storage.service';
 import { PageNotFoundComponent } from './screen/page-not-found/page-not-found.component';
+import { SearchComponent } from './screen/search/search.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { PageNotFoundComponent } from './screen/page-not-found/page-not-found.co
     CreateEditBookComponent,
     ProgressComponent,
     PageNotFoundComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,

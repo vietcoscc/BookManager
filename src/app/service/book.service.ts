@@ -6,6 +6,7 @@ import { BaseResponse } from '../model/BaseResponse';
 import { BaseService } from './base.service';
 
 import { Book } from '../model/Book';
+import { AppComponent } from '../app.component';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class BookService extends BaseService {
     super();
   }
 
-  baseBookUrl = 'http://localhost:8080/api/books';
+  baseBookUrl = AppComponent.baseUrl + 'api/books';
   getBook(id: string | number): Observable<BaseResponse<Book>> {
     let httpOptions = {
       headers: new HttpHeaders({}),
@@ -83,10 +84,30 @@ export class BookService extends BaseService {
   }
 
   deleteBook(id: number): Observable<BaseResponse<string>> {
-    let url = 'http://localhost:8080/api/books/' + id;
+    let url = this.baseBookUrl + "/" + id;
     return this.http.delete<BaseResponse<string>>(url).pipe(
       tap(() => this.log('deleted book: ')),
       catchError(this.handleError<BaseResponse<string>>('delete book'))
     );
+  }
+
+  searchBook(id: string = '', name: string = '', description: string = '', author: string = '', page: string = '', limit: string = '') {
+    let httpOptions = {
+      headers: new HttpHeaders({}),
+      params: new HttpParams()
+        .set('id', id)
+        .set('name', name)
+        .set('description', description)
+        .set('author', author)
+        .set('page', page)
+        .set('limit', limit),
+    };
+
+    return this.http
+      .get<BaseResponse<Array<Book>>>(this.baseBookUrl + "/search", httpOptions)
+      .pipe(
+        tap(() => this.log('fetched books: ')),
+        catchError(this.handleError<BaseResponse<Array<Book>>>('getBooks'))
+      );
   }
 }

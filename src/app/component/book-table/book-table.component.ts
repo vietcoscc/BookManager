@@ -22,7 +22,9 @@ import { Action } from 'src/app/enum';
   styleUrls: ['./book-table.component.css'],
 })
 export class BookTableComponent implements OnInit {
-  data = new MatTableDataSource<Book>();
+
+  @Input('data') data = new MatTableDataSource<Book>();
+
   dtOptions: DataTables.Settings = {};
   displayedColumns: string[] = [
     'id',
@@ -45,10 +47,6 @@ export class BookTableComponent implements OnInit {
       pagingType: 'full_numbers',
       pageLength: 10,
     };
-    this.bookService.getBooks('', 0, 0).subscribe((res) => {
-      console.log(res);
-      this.data.data = (res as any).body;
-    });
   }
 
   searchString: string = ''
@@ -63,6 +61,14 @@ export class BookTableComponent implements OnInit {
 
   ngAfterViewInit() {
     this.data.paginator = this.paginator;
+  }
+
+  get isTableEmpty() {
+    return this.data.data.length == 0
+  }
+
+  get isOnAdvancedSearch() {
+    return this.router.url.startsWith("/search")
   }
 
   imageUrl(element: Book) {
@@ -112,15 +118,14 @@ export class BookTableComponent implements OnInit {
     console.log(event);
     console.log(this.searchString);
 
-    if (this.searchString) {
-      if (event.key == "Enter") {
-        this.bookService.getBooks(this.searchString, 0, 0).subscribe(
-          res => {
-            this.data.data = []
-            this.data.data = (res as any).body
-            this.data._updateChangeSubscription()
-          })
-      }
+    if (event.key == "Enter") {
+      this.bookService.getBooks(this.searchString, 0, 0).subscribe(
+        res => {
+          this.data.data = []
+          this.data.data = (res as any).body
+          this.data._updateChangeSubscription()
+        })
+
     }
   }
   ngOnDestroy(): void { }

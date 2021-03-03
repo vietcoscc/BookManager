@@ -1,10 +1,15 @@
 <div class="content" role="main">
-  <app-tool-bar></app-tool-bar>
-  <button class="btn btn-primary btn-create-book" (click)="createBook()">
-    Create book
-  </button>
-  <div class="data-table">
-    <app-book-table></app-book-table>
+  <div class="container pt-3">
+    <div class="row">
+      <div class="action col-md-12">
+        <button class="btn btn-primary btn-create-book" (click)="createBook()">Create book</button>
+        <div class="spacer"></div>
+        <button class="btn btn-primary btn-search-book" (click)="advancedSearch()">Advanced Search</button>
+      </div>
+    </div>
+    <div class="row">
+      <app-book-table class="col-md-12" [data]="data"></app-book-table>
+    </div>
   </div>
 </div>
 <app-alert-modal #modal></app-alert-modal>

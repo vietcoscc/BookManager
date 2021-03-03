@@ -1,31 +1,60 @@
 #delete {
   margin: 10px;
 }
+
 #edit {
   margin-left: 10px;
 }
 
-img {
-  background-repeat: no-repeat;
-  object-fit: contain;
-  background-clip: border-box;
+#book-image {}
+
+.container {
+  width: 100%;
 }
+
+.input-search {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-search {
+  display: flex;
+  justify-content: flex-end;
+}
+
 table {
   width: 100%;
 }
 
-img {
+#book-image {
   margin: 5px;
   border: 1px solid gray;
   object-fit: cover;
 }
-.search-field{
 
+p {
+  margin-top: 10px;
+  text-align: center;
 }
-.data-table-bar{
+
+.table-toolbar {
   display: flex;
+  flex-direction: row;
 }
 
-.spacer{
+.paginator {
+  display: flex;
+  justify-content: flex-start;
   flex: 1;
+}
+
+.input-search {
+  justify-content: flex-end;
+  flex: 1;
+}
+
+@media (max-width: 800px) {
+  .table-toolbar {
+    flex-direction: column;
+  }
 }

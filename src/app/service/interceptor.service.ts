@@ -26,9 +26,8 @@ export class InterceptorService extends BaseService implements HttpInterceptor {
       this.loaderService.isLoading.next(true);
     }, 1)
     return next.handle(req).pipe(
-      tap((res) => {
-        console.log(res);
-
+      tap((type) => {
+        console.log(type);
       }),
       catchError((err: HttpErrorResponse) => {
         console.log('catchError');
