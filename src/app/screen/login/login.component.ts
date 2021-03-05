@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertModalComponent } from '../../component/alert-modal/alert-modal.component';
 import { from } from 'rxjs';
 import { LoaderService } from 'src/app/service/loader.service';
-import { AuthService } from 'src/app/service/auth.service';
 import { LocalStorageService } from 'src/app/service/local-storage.service';
 import { Action } from 'src/app/enum';
 
@@ -26,7 +25,6 @@ export class LoginComponent implements OnInit {
     private FormBuilder: FormBuilder,
     private loaderService: LoaderService,
     private cdref: ChangeDetectorRef,
-    private authService: AuthService,
     private storage: LocalStorageService,
     private route: ActivatedRoute
   ) {

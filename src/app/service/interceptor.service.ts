@@ -22,6 +22,8 @@ export class InterceptorService extends BaseService implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    console.log('intercept');
+
     setTimeout(() => {
       this.loaderService.isLoading.next(true);
     }, 1)

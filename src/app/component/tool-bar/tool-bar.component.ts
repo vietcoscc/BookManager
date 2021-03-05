@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppComponent } from 'src/app/app.component';
 import { AuthService } from 'src/app/service/auth.service';
 import { LocalStorageService } from 'src/app/service/local-storage.service';
 
@@ -15,7 +16,7 @@ export class ToolBarComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private storage: LocalStorageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
   };
@@ -30,6 +31,6 @@ export class ToolBarComponent implements OnInit {
   logout() {
     console.log('logout');
     this.storage.setLoggedOut()
-    this.router.navigate(['login']);
+    AppComponent.redirectToSignInHostedUI()
   }
 }

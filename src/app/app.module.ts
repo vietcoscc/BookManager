@@ -15,7 +15,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProgressComponent } from './component/progress/progress.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { InterceptorService } from './service/interceptor.service';
-import { AuthService } from './service/auth.service';
 import { LoaderService } from './service/loader.service';
 import { LocalStorageService } from './service/local-storage.service';
 import { PageNotFoundComponent } from './screen/page-not-found/page-not-found.component';
@@ -46,10 +45,9 @@ import { SearchComponent } from './screen/search/search.component';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
-    AuthService,
     LoaderService,
     LocalStorageService
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

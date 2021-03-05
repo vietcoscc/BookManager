@@ -7,13 +7,13 @@ import { LoginComponent } from './screen/login/login.component';
 import { PageNotFoundComponent } from './screen/page-not-found/page-not-found.component';
 import { SearchComponent } from './screen/search/search.component';
 const routes: Routes = [
-  { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
-  { path: 'register', component: LoginComponent },
+  // { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
+  // { path: 'register', component: LoginComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'create', component: CreateEditBookComponent },
-  { path: 'edit', component: CreateEditBookComponent },
-  { path: 'search', component: SearchComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'create', component: CreateEditBookComponent, canActivate: [AuthGuard] },
+  { path: 'edit', component: CreateEditBookComponent, canActivate: [AuthGuard] },
+  { path: 'search', component: SearchComponent, canActivate: [AuthGuard] },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
 

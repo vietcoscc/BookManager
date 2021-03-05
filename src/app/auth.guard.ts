@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AppComponent } from './app.component';
+import { LocalStorageService } from './service/local-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(protected router: Router) {
+  constructor(protected router: Router, protected localStorage: LocalStorageService) {
 
   }
   canActivate(
@@ -14,11 +16,11 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     console.log(route);
     console.log(state);
-    if (localStorage.getItem('login')) {
-      this.router.navigate(['home'])
-      return false
+    if (this.localStorage.isLoggedIn()) {
+      return true
     } else {
-      return true;
+      AppComponent.redirectToSignInHostedUI()
+      return false;
     }
   }
 
