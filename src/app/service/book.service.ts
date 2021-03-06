@@ -91,11 +91,11 @@ export class BookService extends BaseService {
     );
   }
 
-  searchBook(id: string = '', name: string = '', description: string = '', author: string = '', page: string = '', limit: string = '') {
+  searchBook(id: number | null, name: string = '', description: string = '', author: string = '', page: string = '', limit: string = '') {
     let httpOptions = {
       headers: new HttpHeaders({}),
       params: new HttpParams()
-        .set('id', id)
+        .set('id', id ? id.toString() : '')
         .set('name', name)
         .set('description', description)
         .set('author', author)

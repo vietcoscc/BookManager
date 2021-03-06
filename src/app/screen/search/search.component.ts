@@ -10,7 +10,7 @@ import { BookService } from 'src/app/service/book.service';
 })
 export class SearchComponent implements OnInit {
 
-  id: string = ''
+  id: number | null = null
   name: string = ''
   description: string = ''
   author: string = ''
