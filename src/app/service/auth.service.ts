@@ -30,6 +30,6 @@ export class AuthService {
         .set('Authorization', 'Basic ' + authorization)
         .set('Content-Type', 'application/x-www-form-urlencoded')
     };
-    return this.http.post<Oauth2Token>(AppComponent.doMainPrefix + '/oauth2/token', data, options)
+    return this.http.post<Oauth2Token>(AppComponent.awsDoMainPrefix + '/oauth2/token', data, options)
   }
 }

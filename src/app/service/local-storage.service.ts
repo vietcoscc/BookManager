@@ -2,7 +2,7 @@ import { stringify } from '@angular/compiler/src/util';
 import { Injectable } from '@angular/core';
 import { Oauth2Token } from '../model/Oauth2Token';
 
-enum AuthInfo {
+export enum AuthInfo {
   authorizationCode = 'authorizationCode',
   idToken = 'idToken',
   accessToken = 'accessToken',

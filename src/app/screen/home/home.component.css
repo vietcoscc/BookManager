@@ -9,3 +9,11 @@ div.spacer {
 div.action {
   display: flex;
 }
+
+#table-data {
+  margin-top: 50px;
+}
+
+app-book-table{
+  margin-top: 50px;
+}

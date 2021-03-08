@@ -8,14 +8,17 @@ import {
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, delay, finalize, tap } from 'rxjs/operators';
+import { AppComponent } from '../app.component';
+import { AuthService } from './auth.service';
 import { BaseService } from './base.service';
 import { LoaderService } from './loader.service';
+import { AuthInfo, LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InterceptorService extends BaseService implements HttpInterceptor {
-  constructor(public loaderService: LoaderService) {
+  constructor(public loaderService: LoaderService, private localStorage: LocalStorageService) {
     super();
   }
   intercept(
@@ -23,6 +26,15 @@ export class InterceptorService extends BaseService implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     console.log('intercept');
+    // req.headers.append('Authorization', localStorage.getItem(AuthInfo.tokenType) + ' ' + localStorage.getItem(AuthInfo.accessToken))
+    if (!req.url.startsWith(AppComponent.awsDoMainPrefix)) {
+      req = req.clone({
+        setHeaders: {
+          Authorization: localStorage.getItem(AuthInfo.tokenType) + ' ' + localStorage.getItem(AuthInfo.accessToken)
+        }
+      })
+    }
+    console.log(req);
 
     setTimeout(() => {
       this.loaderService.isLoading.next(true);
