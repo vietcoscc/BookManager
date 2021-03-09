@@ -1,13 +1,12 @@
 <div class="content" role="main" *ngIf="isLoggedIn">
-  <div class="container pt-3">
+  <div class="container">
     <div class="row">
       <div class="action col-md-12">
-        <button class="btn btn-primary btn-create-book" (click)="createBook()">Create book</button>
+
         <div class="spacer"></div>
-        <button class="btn btn-primary btn-search-book" (click)="advancedSearch()">Advanced Search</button>
       </div>
     </div>
-    <div class="row">
+    <div id="table-data" class="row">
       <app-book-table class="col-md-12" [data]="data"></app-book-table>
     </div>
   </div>

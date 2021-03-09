@@ -23,7 +23,7 @@ import { BookService } from '../../service/book.service';
 import { AlertModalComponent } from 'src/app/component/alert-modal/alert-modal.component';
 import { AppComponent } from 'src/app/app.component';
 import { Action } from 'src/app/enum';
-import { isEmpty } from 'rxjs/operators';
+import { finalize, isEmpty } from 'rxjs/operators';
 
 @Component({
   templateUrl: './create-edit-book.component.html',
@@ -32,7 +32,7 @@ import { isEmpty } from 'rxjs/operators';
 export class CreateEditBookComponent implements OnInit {
   @ViewChild('modal') private modal!: AlertModalComponent;
   @ViewChild('toolbar') private toolbar!: ToolBarComponent;
-
+  @ViewChild('btnSubmit') private btnSubmit!: ElementRef;
   newBook = new Book();
   file: File | null = null;
   formGroup!: FormGroup;
@@ -93,11 +93,11 @@ export class CreateEditBookComponent implements OnInit {
   ngAfterViewInit() {
     console.log(this.toolbar);
     console.log(this.modal);
-    if (this.isEditScreen) {
-      this.toolbar.setScreenName('Edit Book');
-    } else {
-      this.toolbar.setScreenName('Create Book');
-    }
+    // if (this.isEditScreen) {
+    //   this.toolbar.setScreenName('Edit Book');
+    // } else {
+    //   this.toolbar.setScreenName('Create Book');
+    // }
 
   }
 
@@ -120,28 +120,37 @@ export class CreateEditBookComponent implements OnInit {
 
   createBook() {
     console.log('create');
-    this.bookService.saveBook(this.newBook, this.file).subscribe(
-      (res) => {
-        this.modal.open('Created book');
-        this.router.navigate(['home']);
-        console.log(res);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    this.disableBtn(true)
+    this.bookService.saveBook(this.newBook, this.file)
+      .pipe(finalize(() => {
+        this.disableBtn(false)
+      }))
+      .subscribe(
+        (res) => {
+          this.modal.open('Created book');
+          this.router.navigate(['home']);
+          console.log(res);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 
   editBook() {
     console.log('edit');
-    this.bookService.putBook(this.newBook, this.file).subscribe(
-      (res) => {
-        this.modal.open('Edited book');
-        this.router.navigate(['home'])
-        console.log(res);
-      },
-      (err) => { }
-    );
+    this.bookService.putBook(this.newBook, this.file)
+      .pipe(finalize(() => {
+        this.disableBtn(false)
+      }))
+      .subscribe(
+        (res) => {
+          this.modal.open('Edited book');
+          this.router.navigate(['home'])
+          console.log(res);
+        },
+        (err) => { }
+      );
   }
 
   get imageUrl() {
@@ -178,5 +187,9 @@ export class CreateEditBookComponent implements OnInit {
         this.newBook.imageUrl = reader.result as string;
       };
     }
+  }
+
+  disableBtn(isDisabled: boolean) {
+    this.btnSubmit.nativeElement.disabled = isDisabled
   }
 }

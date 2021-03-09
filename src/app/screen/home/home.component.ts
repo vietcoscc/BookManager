@@ -8,6 +8,7 @@ import { Book } from 'src/app/model/Book';
 import { AuthService } from 'src/app/service/auth.service';
 import { BookService } from 'src/app/service/book.service';
 import { LocalStorageService } from 'src/app/service/local-storage.service';
+import { SearchService } from 'src/app/service/search.service';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +29,8 @@ export class HomeComponent implements OnInit {
     private bookService: BookService,
     public localStorage: LocalStorageService,
     private activatedRoute: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+
   ) {
     console.log(localStorage.getItem('login'));
   }

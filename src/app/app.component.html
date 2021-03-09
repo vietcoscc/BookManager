@@ -1,7 +1,33 @@
 <div class="content">
-  <app-tool-bar *ngIf="!isOnLogin"></app-tool-bar>
-  <div class="loader-container" *ngIf="loaderService.isLoading | async">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  </div>
-  <router-outlet></router-outlet>
+  <mat-drawer-container class="example-container">
+    <mat-drawer #drawer mode="side" closed>
+      <mat-sidenav-container>
+        <mat-sidenav>Start</mat-sidenav>
+        <mat-sidenav-content>
+          <mat-list>
+            <mat-list-item>
+              <h3 matLine style="text-align: center;">Menu</h3>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item class="github" mat-ripple>
+              <mat-icon matListIcon>details</mat-icon>
+              <h3 matLine>Github</h3>
+            </mat-list-item>
+            <mat-list-item class="info" mat-ripple>
+              <mat-icon matListIcon>info</mat-icon>
+              <h3 matLine>Info</h3>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+          </mat-list>
+        </mat-sidenav-content>
+      </mat-sidenav-container>
+    </mat-drawer>
+    <mat-drawer-content>
+      <app-tool-bar #toolbar (toggleDrawer)="drawer.toggle()"></app-tool-bar>
+      <div class="loader-container" *ngIf="loaderService.isLoading | async">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+      <router-outlet></router-outlet>
+    </mat-drawer-content>
+  </mat-drawer-container>
 </div>

@@ -26,7 +26,6 @@ export class InterceptorService extends BaseService implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     console.log('intercept');
-    // req.headers.append('Authorization', localStorage.getItem(AuthInfo.tokenType) + ' ' + localStorage.getItem(AuthInfo.accessToken))
     if (!req.url.startsWith(AppComponent.awsDoMainPrefix)) {
       req = req.clone({
         setHeaders: {

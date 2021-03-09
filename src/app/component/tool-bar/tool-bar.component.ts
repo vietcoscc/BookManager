@@ -1,8 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import { AuthService } from 'src/app/service/auth.service';
 import { LocalStorageService } from 'src/app/service/local-storage.service';
+import { SearchService } from 'src/app/service/search.service';
 
 @Component({
   selector: 'app-tool-bar',
@@ -11,21 +12,34 @@ import { LocalStorageService } from 'src/app/service/local-storage.service';
 })
 export class ToolBarComponent implements OnInit {
   screenName: string = '';
+  searchInput = ''
+  @Output() toggleDrawer = new EventEmitter<string>();
+
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private authService: AuthService,
     private router: Router,
-    private storage: LocalStorageService
+    private storage: LocalStorageService,
+    private route: ActivatedRoute,
+    private searchService: SearchService
   ) { }
+
+  public get isDisplayed(): boolean {
+    return this.router.url.startsWith("/home")
+  }
 
   ngOnInit(): void {
   };
 
+  onMenuClick() {
+    console.log('onMenuClick');
+    this.toggleDrawer.emit()
+  }
 
-  public setScreenName(screenName: string) {
-    console.log('setScreenName: ' + screenName);
-    this.screenName = screenName;
-    this.changeDetectorRef.detectChanges();
+  onSearch() {
+    console.log('onSearch');
+
+    this.searchService.onSearch(this.searchInput)
   }
 
   logout() {

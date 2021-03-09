@@ -1,6 +1,13 @@
-.content {
+mat-drawer-container {
   position: absolute;
-  width: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+mat-sidenav-content {
+  width: 200px;
 }
 
 loader-container {
@@ -8,22 +15,21 @@ loader-container {
   width: 100%;
   z-index: 10;
 }
+mat-list-item.info{
+  cursor: pointer;
+}
 
 @media screen and (max-width: 767px) {
-  .card-container > *:not(.circle-link),
-  .terminal {
+  .card-container>*:not(.circle-link), .terminal {
     width: 100%;
   }
-
   .card:not(.highlight-card) {
     height: 16px;
     margin: 8px 0;
   }
-
   .card.highlight-card span {
     margin-left: 72px;
   }
-
   svg#rocket-smoke {
     right: 120px;
     transform: rotate(-5deg);

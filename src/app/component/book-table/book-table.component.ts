@@ -2,9 +2,11 @@ import { Router } from '@angular/router';
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Input,
   OnInit,
   SimpleChanges,
+  TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -13,8 +15,10 @@ import { BookService } from '../../service/book.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AppComponent } from 'src/app/app.component';
-import { isEmpty } from 'rxjs/operators';
+import { finalize, isEmpty } from 'rxjs/operators';
 import { Action } from 'src/app/enum';
+import { MatButton } from '@angular/material/button';
+import { SearchService } from 'src/app/service/search.service';
 
 @Component({
   selector: 'app-book-table',
@@ -25,6 +29,8 @@ export class BookTableComponent implements OnInit {
 
   @Input('data') data = new MatTableDataSource<Book>();
 
+  @ViewChild("btnEdit") btnEdit!: ElementRef
+  @ViewChild("btnDelete") btnDelete!: ElementRef
   dtOptions: DataTables.Settings = {};
   displayedColumns: string[] = [
     'id',
@@ -37,7 +43,8 @@ export class BookTableComponent implements OnInit {
   constructor(
     private bookService: BookService,
     private router: Router,
-    private cdref: ChangeDetectorRef
+    private cdref: ChangeDetectorRef,
+    private searchService: SearchService
   ) { }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -47,6 +54,15 @@ export class BookTableComponent implements OnInit {
       pagingType: 'full_numbers',
       pageLength: 10,
     };
+    this.searchService.currentMessage.subscribe(inputSearch => {
+      console.log(inputSearch);
+      this.bookService.getBooks(inputSearch, 0, 0).subscribe(
+        res => {
+          this.data.data = []
+          this.data.data = (res as any).body
+          this.data._updateChangeSubscription()
+        })
+    })
   }
 
   searchString: string = ''
@@ -79,6 +95,20 @@ export class BookTableComponent implements OnInit {
     }
   }
 
+  createBook() {
+    console.log('createBook');
+
+    this.router.navigate(['create'], {
+      queryParams: {
+        action: Action.Create,
+      },
+      queryParamsHandling: 'merge',
+      // preserve the existing query params in the route
+      skipLocationChange: false,
+      // do not trigger navigation
+    });
+  }
+
   editBook(id: number | null) {
     if (id == null) {
       return;
@@ -96,14 +126,17 @@ export class BookTableComponent implements OnInit {
   }
 
   deleteBook(index: number, id: number) {
-    console.log(index);
-    this.bookService.deleteBook(id).subscribe(
+    this.disableBtn(true)
+    this.bookService.deleteBook(id).pipe(finalize(() => {
+      this.disableBtn(false)
+    })).subscribe(
       (res) => {
         this.data.data.splice(index, 1);
         this.data._updateChangeSubscription();
       },
       (err) => { },
-      () => { }
+      () => { },
+
     );
     console.log('deleteBook');
   }
@@ -119,14 +152,15 @@ export class BookTableComponent implements OnInit {
     console.log(this.searchString);
 
     if (event.key == "Enter") {
-      this.bookService.getBooks(this.searchString, 0, 0).subscribe(
-        res => {
-          this.data.data = []
-          this.data.data = (res as any).body
-          this.data._updateChangeSubscription()
-        })
+
 
     }
   }
+
+  disableBtn(isDisabled: boolean) {
+    this.btnDelete.nativeElement.disabled = isDisabled
+    this.btnEdit.nativeElement.disabled = isDisabled
+  }
+
   ngOnDestroy(): void { }
 }
