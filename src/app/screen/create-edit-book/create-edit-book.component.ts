@@ -17,20 +17,19 @@ import {
   FormBuilder,
   Validators,
 } from '@angular/forms';
-import { from } from 'rxjs';
 import { Book } from 'src/app/model/Book';
 import { BookService } from '../../service/book.service';
-import { AlertModalComponent } from 'src/app/component/alert-modal/alert-modal.component';
 import { AppComponent } from 'src/app/app.component';
-import { Action } from 'src/app/enum';
 import { finalize, isEmpty } from 'rxjs/operators';
+import { DialogService } from 'src/app/service/dialog.service';
+import { DialogData } from 'src/app/model/DialogData';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   templateUrl: './create-edit-book.component.html',
   styleUrls: ['./create-edit-book.component.css'],
 })
 export class CreateEditBookComponent implements OnInit {
-  @ViewChild('modal') private modal!: AlertModalComponent;
   @ViewChild('toolbar') private toolbar!: ToolBarComponent;
   @ViewChild('btnSubmit') private btnSubmit!: ElementRef;
   newBook = new Book();
@@ -40,7 +39,9 @@ export class CreateEditBookComponent implements OnInit {
     private formBuilder: FormBuilder,
     private bookService: BookService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private dialogService: DialogService,
+    public dialog: MatDialog
   ) {
     this.initData();
     this.formGroup = this.formBuilder.group({
@@ -68,10 +69,10 @@ export class CreateEditBookComponent implements OnInit {
     console.log(this.router.url);
     let action = this.activatedRoute.snapshot.queryParamMap.get('action')!;
     let id = this.activatedRoute.snapshot.queryParamMap.get('id')!;
-    if (!this.router.url.startsWith('/create') && !id) {
+    if (!this.isCreateScreen && !id) {
       this.router.navigate(['home'])
     }
-    if (this.router.url.startsWith('/edit')) {
+    if (this.isEditScreen) {
       this.newBook.id = parseInt(id);
       this.bookService.getBook(id).subscribe(
         (res) => {
@@ -92,22 +93,18 @@ export class CreateEditBookComponent implements OnInit {
 
   ngAfterViewInit() {
     console.log(this.toolbar);
-    console.log(this.modal);
-    // if (this.isEditScreen) {
-    //   this.toolbar.setScreenName('Edit Book');
-    // } else {
-    //   this.toolbar.setScreenName('Create Book');
-    // }
-
   }
 
   get isEditScreen() {
     return this.router.url.startsWith('/edit')
   }
 
+  get isCreateScreen() {
+    return this.router.url.startsWith('/create')
+  }
+
   onSubmit() {
     if (!this.formGroup.valid) {
-      this.modal.open('Invalid');
       return;
     }
     if (!this.isEditScreen) {
@@ -127,8 +124,9 @@ export class CreateEditBookComponent implements OnInit {
       }))
       .subscribe(
         (res) => {
-          this.modal.open('Created book');
-          this.router.navigate(['home']);
+          this.dialogService.openDialog(new DialogData('Created book'), () => {
+            this.router.navigate(['home']);
+          })
           console.log(res);
         },
         (err) => {
@@ -139,14 +137,16 @@ export class CreateEditBookComponent implements OnInit {
 
   editBook() {
     console.log('edit');
+    this.disableBtn(true)
     this.bookService.putBook(this.newBook, this.file)
       .pipe(finalize(() => {
         this.disableBtn(false)
       }))
       .subscribe(
         (res) => {
-          this.modal.open('Edited book');
-          this.router.navigate(['home'])
+          this.dialogService.openDialog(new DialogData('Updated book'), () => {
+            this.router.navigate(['home']);
+          })
           console.log(res);
         },
         (err) => { }
@@ -161,7 +161,7 @@ export class CreateEditBookComponent implements OnInit {
       return this.newBook.imageUrl;
     } else {
       if (this.newBook.imageUrl) {
-        return AppComponent.baseUrl + 'images/' + this.newBook.imageUrl;
+        return AppComponent.baseUrl + 'images/thumb_' + this.newBook.imageUrl;
       } else {
         return AppComponent.defaultBookCover;
       }

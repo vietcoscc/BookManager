@@ -27,6 +27,8 @@ table {
 }
 
 #book-image {
+  width: 100px;
+  height: 120px;
   margin: 5px;
   border: 1px solid gray;
   object-fit: cover;
@@ -52,8 +54,12 @@ p {
   flex: 1;
 }
 
-button.btn-create-book{
+button.btn-create-book {
   position: absolute;
+}
+
+lib-ngx-image-zoom {
+  max-height: 450px!important;
 }
 
 @media (max-width: 800px) {

@@ -1,14 +1,5 @@
 import { Router } from '@angular/router';
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Input,
-  OnInit,
-  SimpleChanges,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Book } from 'src/app/model/Book';
 import { BookService } from '../../service/book.service';
@@ -28,9 +19,6 @@ import { SearchService } from 'src/app/service/search.service';
 export class BookTableComponent implements OnInit {
 
   @Input('data') data = new MatTableDataSource<Book>();
-
-  @ViewChild("btnEdit") btnEdit!: ElementRef
-  @ViewChild("btnDelete") btnDelete!: ElementRef
   dtOptions: DataTables.Settings = {};
   displayedColumns: string[] = [
     'id',
@@ -95,6 +83,14 @@ export class BookTableComponent implements OnInit {
     }
   }
 
+  imageThumbnailUrl(element: Book) {
+    if (element.imageUrl) {
+      return AppComponent.baseUrl + 'images/thumb_' + element.imageUrl;
+    } else {
+      return AppComponent.defaultBookCover;
+    }
+  }
+
   createBook() {
     console.log('createBook');
 
@@ -125,10 +121,10 @@ export class BookTableComponent implements OnInit {
     });
   }
 
-  deleteBook(index: number, id: number) {
-    this.disableBtn(true)
+  deleteBook(index: number, id: number, btnDelete: HTMLButtonElement) {
+    btnDelete.disabled = true
     this.bookService.deleteBook(id).pipe(finalize(() => {
-      this.disableBtn(false)
+      btnDelete.disabled = false
     })).subscribe(
       (res) => {
         this.data.data.splice(index, 1);
@@ -157,9 +153,9 @@ export class BookTableComponent implements OnInit {
     }
   }
 
-  disableBtn(isDisabled: boolean) {
-    this.btnDelete.nativeElement.disabled = isDisabled
-    this.btnEdit.nativeElement.disabled = isDisabled
+  disableBtn(isDisabled: boolean,) {
+    // this.btnDelete.nativeElement.disabled = isDisabled
+    // this.btnEdit.nativeElement.disabled = isDisabled
   }
 
   ngOnDestroy(): void { }

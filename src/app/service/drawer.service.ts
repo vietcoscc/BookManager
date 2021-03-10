@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class DrawerService {
-  isOpenedDrawer: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(false);
+  public isOpenedDrawer: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(false);
 
   constructor() { }
 }

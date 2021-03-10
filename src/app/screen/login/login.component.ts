@@ -3,7 +3,6 @@ import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl, } fro
 import { Component, OnInit, ViewChild, ChangeDetectorRef, } from '@angular/core';
 import { UserService } from '../../service/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertModalComponent } from '../../component/alert-modal/alert-modal.component';
 import { from } from 'rxjs';
 import { LoaderService } from 'src/app/service/loader.service';
 import { LocalStorageService } from 'src/app/service/local-storage.service';
@@ -15,7 +14,6 @@ import { Action } from 'src/app/enum';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  @ViewChild('modal') private modalComponent!: AlertModalComponent;
 
   formGroup!: FormGroup;
 
@@ -105,7 +103,6 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['home']);
         },
         (err) => {
-          this.modalComponent.open('Invalid username or passowrd');
           console.log('HTTP Error', err);
         }
       );
@@ -122,7 +119,6 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['login']);
         },
         (err) => {
-          this.modalComponent.open('Register failed');
           console.log('HTTP Error', err);
         }
       );

@@ -21,7 +21,12 @@
   <ng-container matColumnDef="image">
     <th mat-header-cell *matHeaderCellDef>Image</th>
     <td mat-cell *matCellDef="let element">
-      <img id="book-image" class="rounded" width="100px" height="120px" [src]="imageUrl(element)" />
+      <div id="book-cover">
+        <!-- <lib-ngx-image-zoom [thumbImage]="imageThumbnailUrl(element)" [magnification]="1" [enableScrollZoom]="true"
+          [enableLens]="true" [lensWidth]="200" [fullImage]="imageUrl(element)">
+        </lib-ngx-image-zoom> -->
+        <img id="book-image" class="rounded" [src]="imageThumbnailUrl(element)" />
+      </div>
     </td>
   </ng-container>
 
@@ -50,7 +55,8 @@
       <button #btnEdit id="edit" class="btn btn-primary" (click)="editBook(element.id)">
         edit
       </button>
-      <button #btnDelete id="delete" class="btn btn-primary" (click)="deleteBook(i, element.id)" (disable)="true">
+      <button #btnDelete id="delete" class="btn btn-primary" (click)="deleteBook(i, element.id, btnDelete)"
+        (disable)="true">
         delete
       </button>
     </td>

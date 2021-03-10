@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
-import { AlertModalComponent } from 'src/app/component/alert-modal/alert-modal.component';
 import { Action } from 'src/app/enum';
 import { Book } from 'src/app/model/Book';
 import { AuthService } from 'src/app/service/auth.service';
@@ -16,7 +15,6 @@ import { SearchService } from 'src/app/service/search.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  @ViewChild('modal') private modalComponent!: AlertModalComponent;
 
   data = new MatTableDataSource<Book>()
 
