@@ -158,7 +158,11 @@ export class CreateEditBookComponent implements OnInit {
       !this.isEditScreen ||
       this.newBook.imageUrl?.startsWith('data:')
     ) {
-      return this.newBook.imageUrl;
+      if (this.newBook.imageUrl) {
+        return this.newBook.imageUrl;
+      } else {
+        return AppComponent.baseUrl + 'images/thumb_'
+      }
     } else {
       if (this.newBook.imageUrl) {
         return AppComponent.baseUrl + 'images/thumb_' + this.newBook.imageUrl;
@@ -171,8 +175,13 @@ export class CreateEditBookComponent implements OnInit {
   onFileSelected(event: any) {
     console.log('onFileSelected');
 
+
     if (event.target.files.length > 0) {
       let pickedFile = event.target.files[0];
+      if (pickedFile.size > 2097152) {
+        alert("File is too big!");
+        return
+      }
       console.log(pickedFile.name);
       var mimeType = pickedFile.type;
       if (mimeType.match(/image\/*/) == null) {

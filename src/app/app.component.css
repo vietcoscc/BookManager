@@ -15,7 +15,12 @@ loader-container {
   width: 100%;
   z-index: 10;
 }
-mat-list-item.info{
+
+mat-list-item.github {
+  cursor: pointer;
+}
+
+mat-list-item.info {
   cursor: pointer;
 }
 

@@ -59,6 +59,8 @@ export class HomeComponent implements OnInit {
           AppComponent.redirectToSignInHostedUI()
         }
       )
+    } else if (!this.localStorage.isLoggedIn() && !authorizationCode) {
+      AppComponent.redirectToSignInHostedUI()
     }
   }
 
