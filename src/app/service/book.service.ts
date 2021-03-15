@@ -68,13 +68,15 @@ export class BookService extends BaseService {
       .pipe(tap((_) => this.log('saved book')));
   }
 
-  putBook(book: Book, file: File | null): Observable<BaseResponse<Book>> {
+  putBook(book: Book, hasUrlImg: boolean, file: File | null): Observable<BaseResponse<Book>> {
     //dont touch book ref for display img
     let copyBook = JSON.parse(JSON.stringify(book))
 
     let httpOptions = {};
     let form = new FormData();
-    copyBook.imageUrl = '';
+    if (!hasUrlImg) {
+      copyBook.imageUrl = '';
+    }
     form.append('book', JSON.stringify(copyBook));
     if (file != null) {
       form.append('image', file);

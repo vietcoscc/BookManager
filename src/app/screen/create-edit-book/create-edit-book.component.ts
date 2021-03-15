@@ -35,6 +35,7 @@ export class CreateEditBookComponent implements OnInit {
   newBook = new Book();
   file: File | null = null;
   formGroup!: FormGroup;
+  hasUrlImg = false
   constructor(
     private formBuilder: FormBuilder,
     private bookService: BookService,
@@ -81,6 +82,9 @@ export class CreateEditBookComponent implements OnInit {
             this.router.navigate(['home'])
           } else {
             this.newBook = res.body as Book;
+            if (this.newBook.imageUrl != null && this.newBook.imageUrl.length > 0) {
+              this.hasUrlImg = true
+            }
           }
         },
         (err) => {
@@ -138,7 +142,7 @@ export class CreateEditBookComponent implements OnInit {
   editBook() {
     console.log('edit');
     this.disableBtn(true)
-    this.bookService.putBook(this.newBook, this.file)
+    this.bookService.putBook(this.newBook, this.hasUrlImg, this.file)
       .pipe(finalize(() => {
         this.disableBtn(false)
       }))
