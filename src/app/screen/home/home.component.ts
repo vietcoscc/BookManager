@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkLogin()
-    this.initData()
+
   }
 
   checkLogin() {
@@ -52,6 +52,7 @@ export class HomeComponent implements OnInit {
         res => {
           console.log(res);
           this.localStorage.setLoggedIn(res)
+          this.initData()
         },
         err => {
           console.log(err);
@@ -61,6 +62,8 @@ export class HomeComponent implements OnInit {
       )
     } else if (!this.localStorage.isLoggedIn() && !authorizationCode) {
       AppComponent.redirectToSignInHostedUI()
+    } else {
+      this.initData()
     }
   }
 

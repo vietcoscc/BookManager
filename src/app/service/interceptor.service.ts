@@ -5,11 +5,10 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-import { ChangeDetectorRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, delay, finalize, tap } from 'rxjs/operators';
 import { AppComponent } from '../app.component';
-import { AuthService } from './auth.service';
 import { BaseService } from './base.service';
 import { LoaderService } from './loader.service';
 import { AuthInfo, LocalStorageService } from './local-storage.service';
@@ -18,7 +17,7 @@ import { AuthInfo, LocalStorageService } from './local-storage.service';
   providedIn: 'root',
 })
 export class InterceptorService extends BaseService implements HttpInterceptor {
-  constructor(public loaderService: LoaderService, private localStorage: LocalStorageService) {
+  constructor(public loaderService: LoaderService, private localStorage: LocalStorageService, private storage: LocalStorageService) {
     super();
   }
   intercept(
@@ -44,6 +43,12 @@ export class InterceptorService extends BaseService implements HttpInterceptor {
       }),
       catchError((err: HttpErrorResponse) => {
         console.log('catchError');
+        console.log(err);
+        if (err.status == 403) {
+          window.alert("Token has expired")
+          this.storage.setLoggedOut()
+          AppComponent.redirectToSignInHostedUI()
+        }
         return throwError(err);
       }),
       finalize(() => {

@@ -24,6 +24,7 @@ import { finalize, isEmpty } from 'rxjs/operators';
 import { DialogService } from 'src/app/service/dialog.service';
 import { DialogData } from 'src/app/model/DialogData';
 import { MatDialog } from '@angular/material/dialog';
+import { Location } from '@angular/common';
 
 @Component({
   templateUrl: './create-edit-book.component.html',
@@ -42,7 +43,9 @@ export class CreateEditBookComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private dialogService: DialogService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _location: Location
+
   ) {
     this.initData();
     this.formGroup = this.formBuilder.group({
@@ -129,7 +132,7 @@ export class CreateEditBookComponent implements OnInit {
       .subscribe(
         (res) => {
           this.dialogService.openDialog(new DialogData('Created book'), () => {
-            this.router.navigate(['home']);
+            this._location.back()
           })
           console.log(res);
         },
@@ -149,7 +152,7 @@ export class CreateEditBookComponent implements OnInit {
       .subscribe(
         (res) => {
           this.dialogService.openDialog(new DialogData('Updated book'), () => {
-            this.router.navigate(['home']);
+            this._location.back()
           })
           console.log(res);
         },
