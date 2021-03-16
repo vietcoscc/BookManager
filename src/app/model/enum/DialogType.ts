@@ -1,4 +1,5 @@
 export enum DialogType {
   Alert,
-  Confirms
+  Confirms,
+  ImageDetail
 }

@@ -20,6 +20,20 @@ export class AppDialogComponent implements OnInit {
     return this.data.type == DialogType.Alert
   }
 
+
+  get isConfirmDialog() {
+    return this.data.type == DialogType.Confirms
+  }
+
+  get isImageDetailDialog() {
+    return this.data.type == DialogType.ImageDetail
+  }
+
+
+  get imageUrl(): string {
+    return this.data.data
+  }
+
   ngOnInit(): void {
     if (this.data.type == DialogType.Alert) {
 
@@ -29,10 +43,14 @@ export class AppDialogComponent implements OnInit {
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    console.log('onNoClick');
+
+    this.dialogRef.close(false);
   }
 
   onOkClick(): void {
-    this.dialogRef.close();
+    console.log('onOkClick');
+
+    this.dialogRef.close(true);
   }
 }

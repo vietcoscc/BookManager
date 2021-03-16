@@ -10,6 +10,9 @@ import { finalize, isEmpty } from 'rxjs/operators';
 import { Action } from 'src/app/enum';
 import { MatButton } from '@angular/material/button';
 import { SearchService } from 'src/app/service/search.service';
+import { DialogService } from 'src/app/service/dialog.service';
+import { DialogType } from 'src/app/model/enum/DialogType';
+import { DialogData } from 'src/app/model/DialogData';
 
 @Component({
   selector: 'app-book-table',
@@ -32,7 +35,8 @@ export class BookTableComponent implements OnInit {
     private bookService: BookService,
     private router: Router,
     private cdref: ChangeDetectorRef,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private dialogService: DialogService,
   ) { }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -91,6 +95,14 @@ export class BookTableComponent implements OnInit {
     }
   }
 
+  onViewImageDetail(element: Book) {
+    console.log("onViewImageDetail: " + this.imageUrl(element));
+    this.dialogService.openDialog({
+      type: DialogType.ImageDetail,
+      data: this.imageUrl(element)
+    })
+  }
+
   createBook() {
     console.log('createBook');
 
@@ -122,18 +134,23 @@ export class BookTableComponent implements OnInit {
   }
 
   deleteBook(index: number, id: number, btnDelete: HTMLButtonElement) {
-    btnDelete.disabled = true
-    this.bookService.deleteBook(id).pipe(finalize(() => {
-      btnDelete.disabled = false
-    })).subscribe(
-      (res) => {
-        this.data.data.splice(index, 1);
-        this.data._updateChangeSubscription();
-      },
-      (err) => { },
-      () => { },
+    this.dialogService.openDialog(new DialogData('Are you sure to delete?', DialogType.Confirms)).subscribe(result => {
+      console.log(result);
+      if (result) {
+        btnDelete.disabled = true
+        this.bookService.deleteBook(id).pipe(finalize(() => {
+          btnDelete.disabled = false
+        })).subscribe(
+          (res) => {
+            this.data.data.splice(index, 1);
+            this.data._updateChangeSubscription();
+          },
+          (err) => { },
+          () => { },
 
-    );
+        );
+      }
+    })
     console.log('deleteBook');
   }
 

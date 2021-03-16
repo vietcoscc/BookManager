@@ -131,9 +131,7 @@ export class CreateEditBookComponent implements OnInit {
       }))
       .subscribe(
         (res) => {
-          this.dialogService.openDialog(new DialogData('Created book'), () => {
-            this._location.back()
-          })
+          this.dialogService.openDialog(new DialogData('Created book'))
           console.log(res);
         },
         (err) => {
@@ -151,9 +149,7 @@ export class CreateEditBookComponent implements OnInit {
       }))
       .subscribe(
         (res) => {
-          this.dialogService.openDialog(new DialogData('Updated book'), () => {
-            this._location.back()
-          })
+          this.dialogService.openDialog(new DialogData('Updated book'))
           console.log(res);
         },
         (err) => { }

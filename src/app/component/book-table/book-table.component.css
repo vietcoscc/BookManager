@@ -6,7 +6,9 @@
   margin-left: 10px;
 }
 
-#book-image {}
+#book-image {
+  cursor: pointer;
+}
 
 .container {
   width: 100%;
@@ -66,4 +68,11 @@ lib-ngx-image-zoom {
   .table-toolbar {
     flex-direction: column;
   }
+}
+
+td {
+  padding: 5px !important;
+}
+th{
+  text-align: center !important;
 }

@@ -1,5 +1,8 @@
-#mat-dialog-actions{
+#mat-dialog-actions {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row-reverse;
+}
+
+.mat-dialog-content {
+  overflow-y: hidden !important;
 }

@@ -1,7 +1,9 @@
 <h1 mat-dialog-title>Book manager</h1>
 <div mat-dialog-content>
-  <p>{{data.data}}</p>
+  <p *ngIf="isAlertDialog || isConfirmDialog">{{data.data}}</p>
+  <img width="400" *ngIf="isImageDetailDialog" src={{imageUrl}} alt="">
 </div>
 <div id="mat-dialog-actions" mat-dialog-actions>
-  <button mat-flat-button *ngIf="isAlertDialog" (click)="onOkClick()">Ok</button>
+  <button mat-flat-button (click)="onOkClick()">Ok</button>
+  <button mat-flat-button *ngIf="!isAlertDialog" (click)="onNoClick()">No</button>
 </div>

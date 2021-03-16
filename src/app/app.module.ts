@@ -20,6 +20,7 @@ import { SearchComponent } from './screen/search/search.component';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { AppDialogComponent } from './component/app-dialog/app-dialog.component';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
+import { DialogService } from './service/dialog.service';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { NgxImageZoomModule } from 'ngx-image-zoom';
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
     LoaderService,
     LocalStorageService,
+    DialogService,
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } }
   ],
   bootstrap: [AppComponent],
